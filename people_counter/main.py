@@ -80,7 +80,7 @@ def connect_mqtt():
     client.connect(IPADDRESS, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
     return client
 
-def draw_BB(frame, result, width, height, prob_threshold):
+def draw_BB(frame, result, width, height, prob_threshold, inf_time):
     BBs = result[0][0]
     out_frame = frame
     count_ppl_per_frame = 0
@@ -91,6 +91,7 @@ def draw_BB(frame, result, width, height, prob_threshold):
             top_left =  (int(x_min*width), int(y_min*height))
             bot_right = (int(x_max*width), int(y_max*height))
             out_frame = cv2.rectangle(frame, top_left, bot_right, (255,0,0),2)
+            out_frame = cv2.putText(out_frame, "Inference time:{}ms".format(inf_time), (10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 1, cv2.LINE_AA)
     return out_frame, count_ppl_per_frame
 
 def infer_on_stream(args, client):
@@ -102,10 +103,6 @@ def infer_on_stream(args, client):
     :param client: MQTT client
     :return: None
     """
-    
-    client = mqtt.Client()
-    client.connect(MQTT_HOST, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
-
     # Initialise the class
     infer_network = Network()
     # Set Probability threshold for detections
@@ -146,16 +143,21 @@ def infer_on_stream(args, client):
         p_frame = p_frame.transpose((2,0,1))
         p_frame = p_frame.reshape(1, *p_frame.shape)
 
+        inf_start = time.time()
         ### TODO: Start asynchronous inference for specified request ###
         infer_network.async_inference(p_frame)
 
         ### TODO: Wait for the result ###
         if infer_network.wait() == 0:
+            inf_time = (time.time()-inf_start)*1000
+            inf_time = round(inf_time,3)
+#             print ("inf_time(ms):", inf_time)
+            
             ### TODO: Get the results of the inference request ###
             result = infer_network.extract_output()
             
             ### TODO: Extract any desired stats from the results ###
-            out_frame, count_ppl_per_frame = draw_BB(frame, result, width, height, prob_threshold)
+            out_frame, count_ppl_per_frame = draw_BB(frame, result, width, height, prob_threshold, inf_time)
             
         if count_ppl_per_frame: # person detected
             if frames_wo_person >=3: # new detection after >=3 frames w/o any detections => its a new person
@@ -220,8 +222,7 @@ def main():
     # Grab command line args
     args = build_argparser().parse_args()
     # Connect to the MQTT server
-#     client = connect_mqtt()
-    client =0
+    client = connect_mqtt()
     # Perform inference on the input stream
     infer_on_stream(args, client)
 
