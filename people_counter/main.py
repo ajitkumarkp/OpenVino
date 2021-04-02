@@ -27,6 +27,7 @@ import time
 import socket
 import json
 import cv2
+import numpy as np
 
 import logging as log
 import paho.mqtt.client as mqtt
@@ -174,15 +175,17 @@ def infer_on_stream(args, client):
     frame_rate = cap.get(cv2.CAP_PROP_FPS)
     out = cv2.VideoWriter("output_video.mp4", 0x00000021, frame_rate * 2, (width, height))
     
-    cam_frame_no = 0
     timer_running = False
     start = 0
     duration = 0
     frames_wo_person = 0
     total_count = 0
     new_person = False 
-    avg_duration = 0
+    each_person_duration = list()
     duration_per = 0
+    avg_duration = 0
+    FRAME_DROP_THRESHOLD = 8
+    
     ### TODO: Loop until stream is over ###
     while cap.isOpened():
         ### TODO: Read from the video capture ###
@@ -190,8 +193,6 @@ def infer_on_stream(args, client):
         if not flag:
             break
         key_pressed = cv2.waitKey(60)
-
-        cam_frame_no += 1
 
         ### TODO: Pre-process the image as needed ###
         p_frame = cv2.resize(frame, (net_input_shape[3], net_input_shape[2]))
@@ -214,12 +215,10 @@ def infer_on_stream(args, client):
             out_frame, no_of_ppl_in_frame = draw_BB(frame, result, width, height, prob_threshold, inf_time)
             
         if no_of_ppl_in_frame: # person detected
-            client.publish("person/duration", json.dumps({"duration":duration}))
-            if frames_wo_person >=2: # new detection after >=3 frames w/o any detections => its a new person
+            if frames_wo_person >=FRAME_DROP_THRESHOLD: # new detection after >=3 frames w/o any detections => its a new person
                 frames_wo_person = 0
                 new_person = True
                 total_count+=1
-                client.publish("person", json.dumps({"total":new_person}))
 
                 if timer_running:
                     current = time.time()
@@ -237,23 +236,25 @@ def infer_on_stream(args, client):
      
         else: # person NOT detected
             frames_wo_person += 1
-            if frames_wo_person >=3:               
+            if frames_wo_person >= FRAME_DROP_THRESHOLD:   #if more than 2 consecutive            
+                if duration >= FRAME_DROP_THRESHOLD:
+                    each_person_duration.append(duration)
+                    client.publish("person/duration", json.dumps({"duration":each_person_duration[-1]}))
                 duration = 0
                 start = 0
                 timer_running = False
 
-#         if total_count >=1:
-#             avg_duration = (avg_duration+duration_per)/total_count
-#             avg_duration = int(avg_duration)
+        if (len(each_person_duration)>=1):
+            avg_duration = np.mean(each_person_duration)
+        else:
+            avg_duration = 0
 
-        ### Topic "person": keys of "count" and "total" ###
-        ### Topic "person/duration": key of "duration" ###
         client.publish("person", json.dumps({"count":no_of_ppl_in_frame}))
 
         out_frame = cv2.putText(out_frame,"Person-Count:{}".format(no_of_ppl_in_frame), (10,55), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 1, cv2.LINE_AA)
         out_frame = cv2.putText(out_frame,"Person/Duration:{}".format(duration), (10,75), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 1, cv2.LINE_AA)
         out_frame = cv2.putText(out_frame,"Person-Total:{}".format(total_count), (10,95), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 1, cv2.LINE_AA)
-#         out_frame = cv2.putText(out_frame,"Avg time per person:{}".format(avg_duration), (10,115), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 1, cv2.LINE_AA)
+        out_frame = cv2.putText(out_frame,"Avg time per person:{}".format(round(avg_duration,1)), (10,115), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 1, cv2.LINE_AA)
         out.write(out_frame)
     
         ### TODO: Send the frame to the FFMPEG server ###
@@ -297,7 +298,7 @@ def main():
         # Perform inference on the input stream
         infer_on_stream(args, client)
         
-    elif file_format in ["jpeg", "png"]:
+    elif file_format in ["jpeg", "png", "bmp"]:
         # Perform inference on the input img
         infer_on_image(args)
     else:
