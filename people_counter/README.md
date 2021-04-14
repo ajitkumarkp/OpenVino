@@ -14,8 +14,6 @@ The people counter application will demonstrate how to create a smart video IoT 
 
 The counter will use the Inference Engine included in the Intel® Distribution of OpenVINO™ Toolkit. The model used should be able to identify people in a video frame. The app should count the number of people in the current frame, the duration that a person is in the frame (time elapsed between entering and exiting a frame) and the total count of people. It then sends the data to a local web server using the Paho MQTT Python package.
 
-You will choose a model to use and convert it with the Model Optimizer.
-
 ![architectural diagram](./images/arch_diagram.png)
 
 ## Requirements
@@ -24,7 +22,6 @@ You will choose a model to use and convert it with the Model Optimizer.
 
 * 6th to 10th generation Intel® Core™ processor with Iris® Pro graphics or Intel® HD Graphics.
 * OR use of Intel® Neural Compute Stick 2 (NCS2)
-* OR Udacity classroom workspace for the related course
 
 ### Software
 
@@ -39,15 +36,11 @@ You will choose a model to use and convert it with the Model Optimizer.
 
 ### Install Intel® Distribution of OpenVINO™ toolkit
 
-Utilize the classroom workspace, or refer to the relevant instructions for your operating system for this step.
-
 - [Linux/Ubuntu](./linux-setup.md)
 - [Mac](./mac-setup.md)
 - [Windows](./windows-setup.md)
 
 ### Install Nodejs and its dependencies
-
-Utilize the classroom workspace, or refer to the relevant instructions for your operating system for this step.
 
 - [Linux/Ubuntu](./linux-setup.md)
 - [Mac](./mac-setup.md)
@@ -85,11 +78,7 @@ From the main directory:
 
 ## What model to use
 
-It is up to you to decide on what model to use for the application. You need to find a model not already converted to Intermediate Representation format (i.e. not one of the Intel® Pre-Trained Models), convert it, and utilize the converted model in your application.
-
-Note that you may need to do additional processing of the output to handle incorrect detections, such as adjusting confidence threshold or accounting for 1-2 frames where the model fails to see a person already counted and would otherwise double count.
-
-**If you are otherwise unable to find a suitable model after attempting and successfully converting at least three other models**, you can document in your write-up what the models were, how you converted them, and why they failed, and then utilize any of the Intel® Pre-Trained Models that may perform better.
+Detailed analysis on the Model selction process is documented in the Writeup document.
 
 ## Run the application
 
@@ -155,7 +144,7 @@ Though by default application runs on CPU, this can also be explicitly specified
 ```
 python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m your-model.xml -d CPU -pt 0.6 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
 ```
-If you are in the classroom workspace, use the “Open App” button to view the output. If working locally, to see the output on a web based interface, open the link [http://0.0.0.0:3004](http://0.0.0.0:3004/) in a browser.
+To see the output on a web based interface, open the link [http://0.0.0.0:3004](http://0.0.0.0:3004/) in a browser.
 
 #### Running on the Intel® Neural Compute Stick
 
@@ -185,8 +174,7 @@ User has to give `-video_size` command line argument according to the input as i
 
 ## A Note on Running Locally
 
-The servers herein are configured to utilize the Udacity classroom workspace. As such,
-to run on your local machine, you will need to change the below file:
+To run on your local machine, you will need to change the below file:
 
 ```
 webservice/ui/src/constants/constants.js
