@@ -1,0 +1,17 @@
+Description:
+Implementation is a slight modification of the OV Yolo sample to demo a simple and basic person/bottle detection along with a virtual basket logic for billing.
+eg:
+If a person picks up a bottle, it is added to the virtual basket and the person is billed. 
+If the bottle is put back on the shelf, the  price of the bottle is deducted from the person's bill.
+
+
+To run the sample:
+
+using IP camera stream as input and YOLOv3 model converted to IR format: 
+python3 object_detection_demo_yolov3_async_OV2020.4.py -i rtsp://username:password@ip_addr -m /location_to_yolov3_IR/YOLOv3/tensorflow-yolo-v3/FP16/frozen_darknet_yolov3_model.xml --labels yolo_coco.names -d GPU
+
+Note:
+Using GST and decoding on Vdbox, following line is used in the code:
+  cap = cv2.VideoCapture(input_stream, cv2.CAP_GSTREAMER)
+and to run the sample:
+python3 object_detection_demo_yolov3_async_OV2020.4.py -i "urisourcebin uri=rtsp://username:password@ip_addr ! decodebin ! videoconvert ! appsink sync=false" -m /location_to_yolov3_IR/YOLOv3/tensorflow-yolo-v3/FP16/frozen_darknet_yolov3_model.xml --labels yolo_coco.names -d GPU
