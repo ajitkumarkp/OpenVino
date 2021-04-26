@@ -354,11 +354,9 @@ def main():
     mode = Mode(Modes.USER_SPECIFIED)
     
     # This line is used for CPU based decode. FPS=7.7
-    # python3 object_detection_demo_yolov3_async_OV2020.4.py -i rtsp://admin:ajithost_123@192.168.0.64 -m /home/ajithost/Desktop/workspace/models/public/YOLOv3/tensorflow-yolo-v3/FP16/frozen_darknet_yolov3_model.xml --labels yolo_coco.names -d GPU
     # cap = cv2.VideoCapture(input_stream) #@jit, cv2.CAP_INTEL_MFX)
 
     # This line is used for GPU based decode. This increases FPS to 8.1.
-    # python3 object_detection_demo_yolov3_async_OV2020.4.py -i "urisourcebin uri=rtsp://admin:ajithost_123@192.168.0.64 ! decodebin ! videoconvert ! appsink sync=false" -m /home/ajithost/Desktop/workspace/models/public/YOLOv3/tensorflow-yolo-v3/FP16/frozen_darknet_yolov3_model.xml --labels yolo_coco.names -d GPU
     cap = cv2.VideoCapture(input_stream, cv2.CAP_GSTREAMER) 
      
     wait_key_time = 1
