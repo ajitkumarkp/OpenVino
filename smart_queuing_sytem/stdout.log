@@ -1,0 +1,36 @@
+INTELFPGAOCLSDKROOT is not set
+Using script's current directory (/opt/altera/aocl-pro-rte/aclrte-linux64)
+
+aoc was not found, but aocl was found. Assuming only RTE is installed.
+
+AOCL_BOARD_PACKAGE_ROOT is set to /opt/intel/openvino/bitstreams/a10_vision_design_sg2_bitstreams/BSP/a10_1150_sg2. Using that.
+Adding /opt/altera/aocl-pro-rte/aclrte-linux64/bin to PATH
+Adding /opt/altera/aocl-pro-rte/aclrte-linux64/linux64/lib to LD_LIBRARY_PATH
+Adding /opt/altera/aocl-pro-rte/aclrte-linux64/host/linux64/lib to LD_LIBRARY_PATH
+Adding /opt/intel/openvino/bitstreams/a10_vision_design_sg2_bitstreams/BSP/a10_1150_sg2/linux64/lib to LD_LIBRARY_PATH
+
+aocl program - Configures a new FPGA design onto your board
+
+
+Usage: aocl program <device_name> <file.aocx>
+
+   Supply the .aocx file for the design you wish to configure onto 
+   the FPGA.  You need to provide <device_name> to specify the FPGA 
+   device to configure with. 
+
+Description:
+
+   This command downloads a new design onto your FPGA.
+   This utility should not normally be used, users should instead use 
+   clCreateProgramWithBinary to configure the FPGA with the .aocx file.
+
+MMD INFO : [acla10_1150_sg20] PCIe-to-fabric read test failed, read 0xffffffff after 1 attempts
+Error Code: 147
+Error Description: Error: Failure due to generic standard exception.User requested device 0 is invalid
+File: /home/jenkins/agent/workspace/private-ci/ie/build-linux-ubuntu18/b/repos/fpga-plugin/thirdparty/dla/runtime/core/src/new_device.cpp
+Function: initialize
+Line #: 101
+results/
+results/transportation/
+results/transportation/fpga/
+stderr.log

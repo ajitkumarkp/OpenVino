@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "person_detect.py", line 197, in <module>
+    main(args)
+  File "person_detect.py", line 117, in main
+    pd.load_model()
+  File "person_detect.py", line 61, in load_model
+    self.net = self.core.load_network(network=self.model, device_name=self.device, num_requests=1)
+  File "ie_api.pyx", line 178, in openvino.inference_engine.ie_api.IECore.load_network
+  File "ie_api.pyx", line 187, in openvino.inference_engine.ie_api.IECore.load_network
+RuntimeError: Failed to create FPGA device handle with ID 0
