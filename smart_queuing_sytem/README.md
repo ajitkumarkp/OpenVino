@@ -12,8 +12,10 @@ At a high level the project involves:
 2. Building an application and testing its performance on Intel DevCloud using multiple hardware types- CPU, iGPU, VPU and FPGA.
 3. Comparing the performance to see which hardware is best suited for different scenarios.
 
+The detailed analysis and HW recommendation is documented in choose-the-right-hardware-proposal.pdf.
 
 ### Setup
 Intel DevCloud Platform
+
 
 
