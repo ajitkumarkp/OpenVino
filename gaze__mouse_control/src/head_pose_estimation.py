@@ -53,34 +53,8 @@ class head_pose_model:
 
         return ypr   
         
-    def draw_outputs(self, coords, image):
-        width  = image.shape[1]
-        height = image.shape[0]
-        final_coords=[]
-        for coord in coords:
-            xmin =  int(coord[0]*width) 
-            ymin = int(coord[1]*height)
-            xmax = int(coord[2]*width)
-            ymax = int(coord[3]*height)
-            image = cv2.rectangle(image, (xmin,ymin), (xmax,ymax), (255,0,0),2)
-            box = (xmin,ymin,xmax,ymax)
-            final_coords.append(box)
-        return final_coords, image
-        
-    def preprocess_outputs(self, result):
-        BBs = result[0][0]
-        coords = []
-        for BB in BBs:
-            if BB[2]> self.threshold:
-                x_min, y_min, x_max, y_max = BB[3], BB[4], BB[5], BB[6]
-                coord = (x_min, y_min, x_max, y_max)
-                coords.append(coord)
-        return coords
-            
     def preprocess_input(self, image):
         self.input_img = cv2.resize(image, (self.input_shape[3],self.input_shape[2]), interpolation=cv2.INTER_AREA)
         self.input_img = self.input_img.transpose((2,0,1))
         self.input_img = self.input_img.reshape(1, *self.input_img.shape)
-#         print ("self.input_img:", self.input_img.shape)
-#         return self.input_img
     

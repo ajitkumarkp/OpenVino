@@ -45,7 +45,8 @@ class face_landmark_model:
             result = self.net.requests[0].outputs[self.output_name]
         
         coords = self.preprocess_outputs(result, image)
-        return coords, image 
+
+        return coords 
         
     def preprocess_outputs(self, result, image):
         width  = image.shape[1]
@@ -57,13 +58,13 @@ class face_landmark_model:
         p15x = int(result[0][30]*width)
         p15y = int(result[0][31]*height)
 
-        # cv2.rectangle(image, (p12x,p12y), (p12x+60,p12y+60), (255,0,0),2)
-        # cv2.rectangle(image, (p15x,p15y), (p15x+60,p15y+60), (255,0,0),2)
-        
-        # cv2.circle(image,(p12x, p12y),5,(255,255,0),thickness=-1,lineType=cv2.FILLED)
-        # cv2.circle(image,(p15x, p15y),5,(255,255,0),thickness=-1,lineType=cv2.FILLED)
-        
-        return p12x, p12y, p15x, p15y
+        p14x = int(result[0][28]*width)
+        p17x = int(result[0][34]*width)
+
+        p1y = int(result[0][3]*height)
+        p2y = int(result[0][5]*height)
+
+        return p12x, p12y, p15x, p15y, p14x, p17x, p1y, p2y
             
     def preprocess_input(self, image):
         self.input_img = cv2.resize(image, (self.input_shape[3],self.input_shape[2]), interpolation=cv2.INTER_AREA)

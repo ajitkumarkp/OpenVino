@@ -19,6 +19,7 @@ class face_detection_model:
 
         try:
             self.core = IECore()
+            # print ("self.model_weights:  ", self.model_weights)
             self.model=self.core.read_network(model=self.model_structure, weights=self.model_weights)
         except Exception as e:
             raise ValueError("Could not Initialise the network. Have you enterred the correct model path?")
@@ -31,6 +32,7 @@ class face_detection_model:
 
         
     def load_model(self):
+        # print ("self.device:  ", self.device)
         self.net = self.core.load_network(network=self.model, device_name=self.device, num_requests=1)
         
     def predict(self, image):
@@ -42,22 +44,20 @@ class face_detection_model:
             result = self.net.requests[0].outputs[self.output_name]
         
         coords = self.preprocess_outputs(result)
-        coords, image = self.draw_outputs(coords, image)
-        return coords, image 
+        coords = self.get_face_coords(coords, image)
+        # print("coords:", coords)
+        return coords  
         
-    def draw_outputs(self, coords, image):
+    def get_face_coords(self, coords, image):
         width  = image.shape[1]
         height = image.shape[0]
-        final_coords=[]
         for coord in coords:
-            xmin =  int(coord[0]*width) 
+            xmin = int(coord[0]*width) 
             ymin = int(coord[1]*height)
             xmax = int(coord[2]*width)
             ymax = int(coord[3]*height)
-            image = cv2.rectangle(image, (xmin,ymin), (xmax,ymax), (255,0,0),2)
-            box = (xmin,ymin,xmax,ymax)
-            # final_coords.append(box)
-        return box, image
+            box = xmin,ymin,xmax,ymax
+        return box
         
     def preprocess_outputs(self, result):
         BBs = result[0][0]
