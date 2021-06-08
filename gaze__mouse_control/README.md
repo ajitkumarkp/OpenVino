@@ -12,6 +12,7 @@ To get these inputs, three other OpenVino models are used:
 * Facial Landmarks Detection.
 The Pipeline
 The data frames flow from the input source (video or camera), and then inference of the frames happens through different models and finally the output which represents the direction of the gaze is fed to the mouse controller. The flow of data will look like this:
+![image](https://user-images.githubusercontent.com/16221610/121136887-fca6da00-c7ea-11eb-9dcb-ce568a0acc99.png)
 
 
 
