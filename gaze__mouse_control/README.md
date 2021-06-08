@@ -95,49 +95,49 @@ Eg:
 ---------------
 - Model Load Time (secs) 
 ---------------
-face_detection: 21.28
-face_landmark: 67.78
-head_pose: 8.52
-gaze_estimation: 8.18
-total_load_time: 105.76
+- face_detection: 21.28
+- face_landmark: 67.78
+- head_pose: 8.52
+- gaze_estimation: 8.18
+- total_load_time: 105.76
+----------------
+- Inference Time (msecs) 
+----------------
+- face_detection: 11.26759036144579
+- face_landmark: 6.679999999999997
+- head_pose: 2.264658634538152
+- gaze_estimation: 2.1151405622489943
 ---------------
-Inference Time (msecs) 
+- FPS:26.49
 ---------------
-face_detection: 11.26759036144579
-face_landmark: 6.679999999999997
-head_pose: 2.264658634538152
-gaze_estimation: 2.1151405622489943
----------------
-FPS:26.49
----------------
-mc_update_time (msecs): 0.0 
+- mc_update_time (msecs): 0.0 
 
 2. Comparing CPU v/s GPU inference in FP16
 
 >cd src
 >python main.py --video CAM --show_output 1 --device CPU --precision FP16
 
-precision:FP16
-device:CPU
+- precision:FP16
+- device:CPU
 ---------------
-Model Load Time (secs) 
+- Model Load Time (secs) 
 ---------------
-face_detection: 0.3
-face_landmark: 0.34
-head_pose: 0.08
-gaze_estimation: 0.09
-total_load_time: 0.81
+- face_detection: 0.3
+- face_landmark: 0.34
+- head_pose: 0.08
+- gaze_estimation: 0.09
+- total_load_time: 0.81
 ---------------
-Inference Time (msecs) 
+- Inference Time (msecs) 
 ---------------
-face_detection: 25.06295454545453
-face_landmark: 4.213484848484849
-head_pose: 2.538257575757576
-gaze_estimation: 2.677651515151515
+- face_detection: 25.06295454545453
+- face_landmark: 4.213484848484849
+- head_pose: 2.538257575757576
+- gaze_estimation: 2.677651515151515
 ---------------
-FPS:19.7
+- FPS:19.7
 ---------------
-mc_update_time (msecs): 0.0
+- mc_update_time (msecs): 0.0
 
 Note:
 
