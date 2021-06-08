@@ -1,6 +1,5 @@
 import os
 import sys
-import logging as log
 from openvino.inference_engine import IECore
 import cv2
 
@@ -26,11 +25,8 @@ class gaze_estimation_model:
         self.input_name = [i for i in self.model.inputs.keys()]
         self.input_shape = self.model.inputs[self.input_name[1]].shape
 
-        # print("Input :", self.input_name,"and", self.input_shape)
-        
         self.output_name = next(iter(self.model.outputs))
         self.output_shape = self.model.outputs[self.output_name].shape
-        # print("Output name and shape:", self.output_name,"and", self.output_shape)
         
     def load_model(self):
         self.net = self.core.load_network(network=self.model, device_name=self.device, num_requests=1)
@@ -49,7 +45,7 @@ class gaze_estimation_model:
     def preprocess_input(self, left_eye, right_eye):
         image = cv2.resize(left_eye, (self.input_shape[3],self.input_shape[2]), interpolation=cv2.INTER_AREA)
         image = image.transpose((2,0,1))
-        self.left_eye = image.reshape(1,3,60,60)
+        self.left_eye = image.reshape(1,3,self.input_shape[3],self.input_shape[2])
         
         image = cv2.resize(right_eye, (self.input_shape[3],self.input_shape[2]), interpolation=cv2.INTER_AREA)
         image = image.transpose((2,0,1))

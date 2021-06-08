@@ -13,6 +13,10 @@ from gaze_estimation import gaze_estimation_model
 import matplotlib.pyplot as plt 
 from mouse_controller import MouseController
 import traceback
+import logging
+log_format = "%(asctime)s::%(levelname)s::%(name)s::"\
+             "%(filename)s::%(lineno)d::%(message)s"
+logging.basicConfig(level='INFO', format=log_format)
 
 #@profile
 def main(args):
@@ -21,7 +25,6 @@ def main(args):
     output_path=args.output_path
     precision=args.precision
     show_output=args.show_output
-    LOGGING=0 # Set to 1 to see logs
 
     model_face = "../intel/face-detection-0202/"+precision+"/face-detection-0202"
     model_landmark = "../intel/facial-landmarks-35-adas-0002/"+precision+"/facial-landmarks-35-adas-0002"
@@ -32,34 +35,34 @@ def main(args):
     fd= face_detection_model(model_face, device)
     fd.load_model()
     face_detection_load_time = round(time.time() - start_model_load_time,2)
-    if LOGGING: print("{} loaded into device: {}".format(model_face, device))
+    logging.info("{} loaded into device: {}".format(model_face, device))
 
     start_model_load_time=time.time()
     fl= face_landmark_model(model_landmark, device)
     fl.load_model()
     face_landmark_load_time = round(time.time() - start_model_load_time,2)
-    if LOGGING: print("{} loaded into device:{}".format(model_landmark, device))
+    logging.info("{} loaded into device:{}".format(model_landmark, device))
 
     start_model_load_time=time.time()
     hp= head_pose_model(model_headpose, device)
     hp.load_model()
     head_pose_load_time = round(time.time() - start_model_load_time,2)
-    if LOGGING: print("{} loaded into device:{}".format(model_headpose, device))
+    logging.info("{} loaded into device:{}".format(model_headpose, device))
 
     start_model_load_time=time.time()
     gz= gaze_estimation_model(model_gaze, device)
     gz.load_model()
     gaze_estimation_load_time = round(time.time() - start_model_load_time,2)
-    if LOGGING: print("{} loaded into device:{}".format(model_gaze, device))
+    logging.info("{} loaded into device:{}".format(model_gaze, device))
 
     total_model_load_time = round(face_detection_load_time+face_landmark_load_time+head_pose_load_time+gaze_estimation_load_time, 2)
 
     try:
         cap=cv2.VideoCapture(video_source)
     except FileNotFoundError:
-        print("Cannot locate video file: "+ video_source)
+        logging.error("Cannot locate video file: "+ video_source)
     except Exception as e:
-        print("Something else went wrong with the video file: ", e)
+        logging.error("Something else went wrong with the video file: ", e)
     
     initial_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     initial_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -89,7 +92,7 @@ def main(args):
         while cap.isOpened():
             ret, frame=cap.read()
             if not ret:
-                print("Unable to read video frame!")
+                logging.error("Unable to read video frame!")
                 break
             counter+=1
             
@@ -102,7 +105,7 @@ def main(args):
             face = frame[face_coords[1]:face_coords[3], face_coords[0]:face_coords[2]]
             fd_inf_time += round(time.time()-fd_time,5)*1000
             stats["fd_inf_time"]=fd_inf_time
-            if LOGGING: print("Face detection done.")
+            logging.debug("Face detection done.")
             
             # Annotations- Face
             if show_output:
@@ -114,7 +117,7 @@ def main(args):
             eye_coords = fl.predict(face)
             fl_inf_time += round(time.time()-fl_time,5)*1000
             stats["fl_inf_time"]=fl_inf_time
-            if LOGGING: print("Face landmark detection done.")
+            logging.debug("Face landmark detection done.")
 
             p12x, p12y, p15x, p15y, p14x, p17x, p1y, p2y = eye_coords
             left_eye  = face[p12y:p1y+5, p12x:p14x]
@@ -143,7 +146,7 @@ def main(args):
             hp_inf_time += round(time.time()-hp_time,5)*1000
             ypr = np.array(ypr).reshape(1,3)
             stats["hp_inf_time"]=hp_inf_time
-            if LOGGING: print("Headpose estimation done.")
+            logging.debug("Headpose estimation done.")
 
             # Gaze estimation            
             gz_time=time.time()
@@ -152,7 +155,7 @@ def main(args):
             x = direction[0][0]
             y = direction[0][1]
             stats["gz_inf_time"]=gz_inf_time
-            if LOGGING: print("Gaze estimation done.")           
+            logging.debug("Gaze estimation done.")           
 
             # Update Mouse pointer
             mc= MouseController("high","fast")
@@ -196,7 +199,7 @@ def main(args):
         cv2.destroyAllWindows()
 
     except Exception:
-        print(traceback.format_exc())
+        logging.error(traceback.format_exc())
 
 def log_stats(stats, output_path, counter):
     now = datetime.datetime.now()
