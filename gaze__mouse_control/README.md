@@ -1,7 +1,7 @@
 # Computer Pointer Controller
 This project, uses a gaze detection to control the mouse pointer on the computer. App uses the Gaze Estimation model to estimate the gaze of the user's eyes and change the mouse pointer position accordingly. 
 
-##How it works
+## How it works
 The app uses InferenceEngine API from Intel's OpenVino ToolKit to build the gaze estimation model which requires three inputs:
 * The head pose
 * The left eye image
@@ -12,19 +12,19 @@ To get these inputs, three other OpenVino models are used:
 * Head Pose Estimation
 * Facial Landmarks Detection.
 
-##The Pipeline
+## The Pipeline
 The data frames flow from the input source (video or camera), and then inference of the frames happens through different models and finally the output which represents the direction of the gaze is fed to the mouse controller. The flow of data will look like this:
 
 ![image](https://user-images.githubusercontent.com/16221610/121136887-fca6da00-c7ea-11eb-9dcb-ce568a0acc99.png)
 
 
-##Project Set Up and Installation
+## Project Set Up and Installation
 
-###System info:
+### System info:
 - MS Windows 10 Enterprise version Build 18363
 - Intel Core i7-8665U
 
-###Project directory structure:
+### Project directory structure:
 
 1. The project “gaze_mouse_control” directory structure is as follows:
 - “bin” directory has the input demo video, output videos, and the stats files
@@ -42,7 +42,7 @@ Note:
 - input_feeder.py is unused. 
 - main.py.lprof is the output of lineprofiler that can be ignored.
 
-###Installation steps:
+### Installation steps:
 
 1. Download and install Anaconda on Windows 10- https://www.anaconda.com/products/individual.
 2. Open Anaconda command prompt and type the following to create and activate the virtual conda environment:
@@ -50,7 +50,7 @@ Note:
 > conda env create -f openvino_env.yml 
 > conda activate openvino_env	
 
-###Running the application:
+### Running the application:
 1. For help with Running the application: 
 >cd src
 >python main.py --help
@@ -65,6 +65,7 @@ Note:
 To end the application hit cltr+c on the keyboard.
 
 Output:
+
 Mouse pointer on screen will follow the gaze of the instructor in demo.mp4.
 Output video will be saved in “bin”. Stats will also be saved under “bin” with time stamp.
 
@@ -72,11 +73,13 @@ Output video will be saved in “bin”. Stats will also be saved under “bin�
 
 >cd src
    >python main.py --video CAM --show_output 1 --device GPU --precision FP16
+
 Note: 
+
 To end the application hit Esc on the keyboard.
    
 
-###Benchmarking and Observations:
+### Benchmarking and Observations:
 
 1. The bottleneck
 The Throughput/FPS of the pipeline suffers badly due to the mouse controller API in pyautogui i.e pyautogui.moveRel()takes about 1 sec. This is the biggest bottle neck in the application!
