@@ -1,5 +1,5 @@
 # Computer Pointer Controller
-This project, uses a gaze detection to control the mouse pointer on the computer. App uses the Gaze Estimation model to estimate the gaze of the user's eyes and change the mouse pointer position accordingly. 
+This project uses gaze detection to control the mouse pointer on the computer. App uses Gaze Estimation neural network model to estimate the gaze of the user's eyes and change the mouse pointer position accordingly. 
 
 ## How it works
 The app uses InferenceEngine API from Intel's OpenVino ToolKit to build the gaze estimation model which requires three inputs:
@@ -9,11 +9,11 @@ The app uses InferenceEngine API from Intel's OpenVino ToolKit to build the gaz
 
 To get these inputs, three other OpenVino models are used:
 * Face Detection
+* Facial Landmarks Detection
 * Head Pose Estimation
-* Facial Landmarks Detection.
 
 ## The Pipeline
-The data frames flow from the input source (video or camera), and then inference of the frames happens through different models and finally the output which represents the direction of the gaze is fed to the mouse controller. The flow of data will look like this:
+The data frames flow from the input source (video or camera), then the inference of the frames happens through different models and finally the output which represents the direction of the gaze is fed to the mouse controller. The flow of data will look like this:
 
 ![image](https://user-images.githubusercontent.com/16221610/121136887-fca6da00-c7ea-11eb-9dcb-ce568a0acc99.png)
 
@@ -21,7 +21,7 @@ The data frames flow from the input source (video or camera), and then inference
 ## Project Set Up and Installation
 
 ### System info:
-- MS Windows 10 Enterprise version Build 18363
+- MS Windows 10 Enterprise version Build 18363 or Ubuntu 20
 - Intel Core i7-8665U
 
 ### Project directory structure:
