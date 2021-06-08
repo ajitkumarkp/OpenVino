@@ -1,0 +1,21 @@
+precision:FP32
+device:CPU
+---------------
+Model Load Time (secs) 
+---------------
+face_detection: 0.28
+face_landmark: 0.34
+head_pose: 0.08
+gaze_estimation: 0.09
+total_load_time: 0.79
+---------------
+Inference Time (msecs) 
+---------------
+face_detection: 23.33428571428571
+face_landmark: 3.7199999999999998
+head_pose: 3.0
+gaze_estimation: 2.0
+---------------
+FPS:0.81
+---------------
+mc_update_time (msecs): 1160.52

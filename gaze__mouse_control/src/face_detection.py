@@ -42,6 +42,10 @@ class face_detection_model:
 
         if(self.net.requests[0].wait(-1) == 0):
             result = self.net.requests[0].outputs[self.output_name]
+
+        # infer_request_handle  = self.net.start_async(request_id=0, inputs=input_dict)
+        # if(infer_request_handle.wait(-1)==0):
+        #     result = infer_request_handle.output_blobs[self.output_name]
         
         coords = self.preprocess_outputs(result)
         coords = self.get_face_coords(coords, image)
