@@ -90,11 +90,11 @@ Eg:
 >cd src
    >python main.py --video CAM --show_output 1 --device GPU --precision FP16
 
-precision:FP16
-device:GPU
----------------
-Model Load Time (secs) 
----------------
+- precision:FP16
+- device:GPU
+- ---------------
+- Model Load Time (secs) 
+- ---------------
 face_detection: 21.28
 face_landmark: 67.78
 head_pose: 8.52
