@@ -12,25 +12,8 @@ To get these inputs, three other OpenVino models are used:
 * Facial Landmarks Detection.
 The Pipeline
 The data frames flow from the input source (video or camera), and then inference of the frames happens through different models and finally the output which represents the direction of the gaze is fed to the mouse controller. The flow of data will look like this:
+
 ![image](https://user-images.githubusercontent.com/16221610/121136887-fca6da00-c7ea-11eb-9dcb-ce568a0acc99.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Project Set Up and Installation
@@ -141,24 +124,18 @@ stats_hh_mm.txt
 
 precision:FP32
 device:CPU
----------------
 Model Load Time (secs) 
----------------
 face_detection: 0.21
 face_landmark: 0.25
 head_pose: 0.07
 gaze_estimation: 0.07
 total_load_time: 0.6
----------------
 Inference Time (msecs) 
----------------
 face_detection: 19.165000000000003
 face_landmark: 3.3200000000000003
 head_pose: 2.1683333333333334
 gaze_estimation: 1.8233333333333333
----------------
 FPS:0.83
----------------
 mc_update_time (msecs): 1161.34
 
 
@@ -194,40 +171,6 @@ gaze_estimation: 1.9069135802469137
 FPS:0.84
 ---------------
 mc_update_time (msecs): 1160.92
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Benchmarking and Observations:
 
