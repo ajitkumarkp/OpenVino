@@ -1,7 +1,7 @@
-Computer Pointer Controller
-This project, uses a gaze detection to control the mouse pointer on the computer. App uses the†Gaze Estimation†model to estimate the gaze of the user's eyes and change the mouse pointer position accordingly. 
+## Computer Pointer Controller
+This project, uses a gaze detection to control the mouse pointer on the computer. App uses the¬†Gaze Estimation¬†model to estimate the gaze of the user's eyes and change the mouse pointer position accordingly. 
 How it works
-The app uses InferenceEngine API from Intel's OpenVino ToolKit to build the†gaze estimation†model which requires three inputs:
+The app uses InferenceEngine API from Intel's OpenVino ToolKit to build the¬†gaze estimation¬†model which requires three inputs:
 * The head pose
 * The left eye image
 * The right eye image
@@ -40,14 +40,14 @@ System info:
 
 Project directory structure:
 
-1. The project ìgaze_mouse_controlî directory structure is as follows:
+1. The project ‚Äúgaze_mouse_control‚Äù directory structure is as follows:
 
 
-- ìbinî directory has the input demo video, output videos, and the stats files:
+- ‚Äúbin‚Äù directory has the input demo video, output videos, and the stats files:
 
 
 
-- ìintelî directory has all the model files:
+- ‚Äúintel‚Äù directory has all the model files:
 
 
 
@@ -59,10 +59,10 @@ Example cmd line on linux:
 python3 /opt/intel/openvino_2021/deployment_tools/open_model_zoo/tools/downloader/downloader.py --name face-detection-0202
 
 
-- ìsrcî directory has all the source files:
+- ‚Äúsrc‚Äù directory has all the source files:
 
 The main.py file contains the main logic of the appicaltion. 
-There are separate files for each of the models (with the modelís name) that contains the code for abstracting the class and methods are each model eg: load_model(), predict() etc.
+There are separate files for each of the models (with the model‚Äôs name) that contains the code for abstracting the class and methods are each model eg: load_model(), predict() etc.
 
 Note: 
 - input_feeder.py is unused. 
@@ -133,7 +133,7 @@ To end the application hit cltr+c on the keyboard.
 
 Output:
 Mouse pointer on screen will follow the gaze of the instructor in demo.mp4.
-Output video will be saved in ìbinî. Stats will also be saved under ìbinî with time stamp:
+Output video will be saved in ‚Äúbin‚Äù. Stats will also be saved under ‚Äúbin‚Äù with time stamp:
 
 eg: 
 stats_hh_mm.txt
