@@ -92,9 +92,9 @@ Eg:
 
 - precision:FP16
 - device:GPU
-- ---------------
+---------------
 - Model Load Time (secs) 
-- ---------------
+---------------
 face_detection: 21.28
 face_landmark: 67.78
 head_pose: 8.52
